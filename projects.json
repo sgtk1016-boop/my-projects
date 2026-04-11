@@ -41,29 +41,6 @@
         "自動化"
       ],
       "notes": "Windows環境でのstdin日本語エンコーディング問題あり（--dataモードで回避可能）"
-    },
-    {
-      "id": "20260411-04",
-      "name": "入所・退所 通知システム",
-      "date": "2026-04-11",
-      "purpose": "Googleカレンダーに新しい予定が登録されると5分以内にGoogle Chatへ自動通知し、入所・退所・SS利用を色分けカードで周知するため",
-      "mechanism": "Google Apps Script（GAS）＋ JavaScript（V8エンジン）。CalendarAppで2本のカレンダーを5分ごとに監視し、PropertiesServiceで通知済みフラグを管理して重複送信を防止。UrlFetchApp経由でGoogle Chat WebhookにcardsV2形式＋@全員メンションで通知",
-      "integrations": [
-        "Google Apps Script",
-        "Google Calendar API",
-        "Google Chat Webhook",
-        "PropertiesService",
-        "UrlFetchApp",
-        "Stackdriver"
-      ],
-      "status": "completed",
-      "tags": [
-        "業務DX",
-        "自動化",
-        "GAS"
-      ],
-      "usage": "①GASプロジェクトを開きスクリプトプロパティにカレンダーIDとWebhook URLを登録 ②トリガーを「時間ベース・5分ごと」に設定 ③予定タイトルに「入所通知書」「退所通知書」「SS利用」を含めると色分け通知が自動送信される",
-      "notes": ""
     }
   ]
 }
