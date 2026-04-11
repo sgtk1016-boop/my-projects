@@ -67,6 +67,29 @@
       "usage": "①python generate.py --new <シリーズ名> でフォルダ+meta.json作成②thumbnail.png（サムネイル）/ bg.png（動画背景）/ MP3を配置③起動.batでGUI起動④動画生成タブ：プレビュー→本番生成（3時間）⑤アップロードタブ：タイトル自動生成→予約投稿設定→アップロード→全言語翻訳&設定",
       "prompt": "ABYSS PHONK YouTube BGM動画の生成からYouTubeアップロードまでを自動化するGUIツールを作って",
       "notes": "バッチ自動実行（毎日投稿スケジューラ）は未実装。実際の動作確認はこれから。"
+    },
+    {
+      "id": "20260411-04",
+      "name": "AbyssPhonk サムネイル横展開",
+      "date": "2026-04-11",
+      "purpose": "CRIMSON GAZE・CRIMSON DOMINIONの勝ちサムネをベースに、Midjourney + Canvaで横展開サムネを量産するワークフロー。6本のサムネを作成済み。",
+      "mechanism": "1. 元サムネをImage Promptsに設定（--iw 1.5）\n2. テキストプロンプトで差分要素のみ指定（追加要素はfaintレベルで抑制）\n3. 生成画像をCanvaで色調整（明るさ-15 / シャドウ-20 / コントラスト+28）\n4. Bebas Nueuでテキスト追加（暗いエリアに配置）\n5. CLAUDE.mdでClaude Codeが全フェーズを自動実行",
+      "integrations": [
+        "Midjourney",
+        "Canva",
+        "Claude Code"
+      ],
+      "status": "in_progress",
+      "tags": [
+        "AbyssPhonk",
+        "サムネイル",
+        "横展開",
+        "Midjourney",
+        "Canva"
+      ],
+      "usage": "1. [外部SSD]/AbyssPhonk/CLAUDE.md をプロジェクトルートに置く\n2. ターミナルで cd [フォルダ] → claude コマンドで起動\n3. 元サムネ画像 + 新シリーズ名を渡すだけで3フェーズが流れる",
+      "prompt": "CLAUDE.mdを参照。元サムネ画像・新シリーズ名・追加要素（任意）を渡してください。",
+      "notes": "使用済みシリーズ名：CRIMSON GAZE / DOMINION / ABYSS / SOVEREIGN / SILENCE / SHADOW / CURSE / RITUAL\n未使用：CRIMSON WEB / VENOM / SEDUCTION / QUEEN / SPECTER / ECLIPSE / WRATH\nテキスト配置ルール：顔が左寄り→右上 / 顔が右寄り→左上 / かぶさる場合は反対側"
     }
   ]
 }
