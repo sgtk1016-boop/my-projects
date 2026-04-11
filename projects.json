@@ -12,6 +12,7 @@
         "Python",
         "自動化"
       ],
+      "usage": "①python register.py を実行 ②1:新規登録 / 2:既存編集 を選択 ③各フィールドを入力して登録。自動モードは --data '{JSON}' オプションで実行。閲覧は python view.py またはGitHub Pages",
       "notes": ""
     },
     {
@@ -26,6 +27,7 @@
         "Python",
         "自動化"
       ],
+      "usage": "①python register.py を実行 ②1:新規登録 / 2:既存編集 を選択 ③各フィールドを入力して登録。自動モードは --data '{JSON}' オプションで実行。閲覧は python view.py またはGitHub Pages",
       "notes": "Windows環境でのstdin日本語エンコーディング問題あり（--dataモードで回避可能）"
     },
     {
@@ -40,6 +42,7 @@
         "Python",
         "自動化"
       ],
+      "usage": "①python register.py を実行 ②1:新規登録 / 2:既存編集 を選択 ③各フィールドを入力して登録。自動モードは --data '{JSON}' オプションで実行。閲覧は python view.py またはGitHub Pages",
       "notes": "Windows環境でのstdin日本語エンコーディング問題あり（--dataモードで回避可能）"
     }
   ]
