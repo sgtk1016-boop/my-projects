@@ -45,6 +45,50 @@
       "usage": "①https://sgtk1016-boop.github.io/my-projects/ を開く ②右上「Token設定」でGitHub PATを入力（初回のみ） ③「新規登録」で追加 / 各行の「編集」「削除」ボタンで操作 ④CLIはpython register.py で対話登録 または --data オプションで自動登録",
       "prompt": "ClaudeCodeで作ったプロジェクトをGitHub Pagesで閲覧・登録・編集・削除できるシステムを作って。ブラウザからCRUD操作でき、どこからでもアクセスできるようにしたい。",
       "notes": "GitHub PATはlocalStorageに保存。Publicリポジトリのため個人情報は記載しない。"
+    },
+    {
+      "id": "20260411-04",
+      "name": "ABYSS PHONK 動画自動生成ツール",
+      "date": "2026-04-11",
+      "purpose": "ABYSS PHONKチャンネル用のYouTube BGM動画を自動生成・アップロードする。SUNOで生成したMP3をFFmpegでクロスフェード結合し、3時間ループ動画を自動作成してYouTubeに投稿する。",
+      "mechanism": "Python + tkinter GUI。generate.py（FFmpeg）でMP3クロスフェード→3時間MP4生成。meta_gen.pyでタイトル/概要/タグ自動生成（ffprobeでタイムスタンプ計算）。youtube_upload.pyでYouTube Data API v3アップロード。translate.pyでGemini API 12言語一括翻訳→localization設定。",
+      "integrations": [
+        "YouTube Data API v3",
+        "Gemini API",
+        "FFmpeg",
+        "ffprobe"
+      ],
+      "status": "completed",
+      "tags": [
+        "YouTube",
+        "自動化",
+        "Python"
+      ],
+      "usage": "①python generate.py --new <シリーズ名> でフォルダ＋meta.json作成②thumbnail.png（サムネイル）/ bg.png（動画背景）/ MP3を配置③起動.batでGUI起動④動画生成タブ：プレビュー→本番生成（3時間）⑤アップロードタブ：🤖自動生成→予約投稿設定→▲アップロード→🌍全言語翻訳&設定",
+      "prompt": "ABYSS PHONK YouTube BGM動画の生成からYouTubeアップロードまでを自動化するGUIツールを作って",
+      "notes": "バッチ自動実行（毎日投稿スケジューラ）は未実装。実際の動作確認はこれから。"
+    },
+    {
+      "id": "20260411-05",
+      "name": "ABYSS PHONK 動画自動生成ツール",
+      "date": "2026-04-11",
+      "purpose": "ABYSS PHONKチャンネル用のYouTube BGM動画を自動生成・アップロードする。SUNOで生成したMP3をFFmpegでクロスフェード結合し、3時間ループ動画を自動作成してYouTubeに投稿する。",
+      "mechanism": "Python + tkinter GUI。generate.py（FFmpeg）でMP3クロスフェード→3時間MP4生成。meta_gen.pyでタイトル/概要/タグ自動生成（ffprobeでタイムスタンプ計算）。youtube_upload.pyでYouTube Data API v3アップロード。translate.pyでGemini API 12言語一括翻訳→localization設定。",
+      "integrations": [
+        "YouTube Data API v3",
+        "Gemini API",
+        "FFmpeg",
+        "ffprobe"
+      ],
+      "status": "completed",
+      "tags": [
+        "YouTube",
+        "自動化",
+        "Python"
+      ],
+      "usage": "①python generate.py --new <シリーズ名> でフォルダ+meta.json作成②thumbnail.png（サムネイル）/ bg.png（動画背景）/ MP3を配置③起動.batでGUI起動④動画生成タブ：プレビュー→本番生成（3時間）⑤アップロードタブ：タイトル自動生成→予約投稿設定→アップロード→全言語翻訳&設定",
+      "prompt": "ABYSS PHONK YouTube BGM動画の生成からYouTubeアップロードまでを自動化するGUIツールを作って",
+      "notes": "バッチ自動実行（毎日投稿スケジューラ）は未実装。実際の動作確認はこれから。"
     }
   ]
 }
