@@ -87,6 +87,10 @@ def edit_mode(data, projects):
     if usage_in:
         entry["usage"] = usage_in
 
+    prompt_in = input(f"prompt     [{entry.get('prompt', '')}]: ").strip()
+    if prompt_in:
+        entry["prompt"] = prompt_in
+
     notes_in = input(f"notes      [{entry.get('notes', '')}]: ").strip()
     if notes_in:
         entry["notes"] = notes_in
@@ -140,7 +144,7 @@ def delete_mode(data, projects):
     print(f"「{target['name']}」を削除しました。")
     git_sync(target["name"], target["date"], action="remove")
 
-def register_entry(data, projects, name, purpose, mechanism, integrations, status, tags, usage, notes):
+def register_entry(data, projects, name, purpose, mechanism, integrations, status, tags, usage, prompt, notes):
     entry = {
         "id":           generate_id(projects),
         "name":         name,
@@ -151,6 +155,7 @@ def register_entry(data, projects, name, purpose, mechanism, integrations, statu
         "status":       status,
         "tags":         tags,
         "usage":        usage,
+        "prompt":       prompt,
         "notes":        notes,
     }
 
@@ -193,6 +198,7 @@ def main():
             status=payload.get("status", "planning"),
             tags=payload.get("tags", []),
             usage=payload.get("usage", ""),
+            prompt=payload.get("prompt", ""),
             notes=payload.get("notes", ""),
         )
         return
@@ -217,10 +223,11 @@ def main():
     status = STATUS_MAP.get(status_key, "planning")
 
     tags  = [s.strip() for s in input("tags (カンマ区切り): ").split(",") if s.strip()]
-    usage = input("usage / 使用方法 (空Enterでスキップ): ").strip()
-    notes = input("notes (空Enterでスキップ): ").strip()
+    usage  = input("usage / 使用方法 (空Enterでスキップ): ").strip()
+    prompt = input("prompt / Claude指示プロンプト (空Enterでスキップ): ").strip()
+    notes  = input("notes (空Enterでスキップ): ").strip()
 
-    register_entry(data, projects, name, purpose, mechanism, integrations, status, tags, usage, notes)
+    register_entry(data, projects, name, purpose, mechanism, integrations, status, tags, usage, prompt, notes)
 
 if __name__ == "__main__":
     main()

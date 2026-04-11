@@ -147,6 +147,8 @@
       <input type="text" id="f-tags" placeholder="Python, 自動化"></div>
     <div class="form-row"><label>使用方法（usage）</label>
       <textarea id="f-usage"></textarea></div>
+    <div class="form-row"><label>Claude への指示プロンプト（prompt）</label>
+      <textarea id="f-prompt" placeholder="「〇〇を作って」と伝えた内容"></textarea></div>
     <div class="form-row"><label>備考（notes）</label>
       <textarea id="f-notes"></textarea></div>
     <div class="form-actions">
@@ -286,6 +288,7 @@ function showForm(entry = null) {
   document.getElementById('f-status').value      = entry?.status || 'planning';
   document.getElementById('f-tags').value        = (entry?.tags || []).join(', ');
   document.getElementById('f-usage').value       = entry?.usage || '';
+  document.getElementById('f-prompt').value      = entry?.prompt || '';
   document.getElementById('f-notes').value       = entry?.notes || '';
   openModal('form-modal');
 }
@@ -308,6 +311,7 @@ async function saveEntry() {
       status:       document.getElementById('f-status').value,
       tags:         split(document.getElementById('f-tags').value),
       usage:        document.getElementById('f-usage').value.trim(),
+      prompt:       document.getElementById('f-prompt').value.trim(),
       notes:        document.getElementById('f-notes').value.trim(),
     };
     const ok = await saveProjects(projects, `update: ${name}`);
@@ -324,6 +328,7 @@ async function saveEntry() {
       status:       document.getElementById('f-status').value,
       tags:         split(document.getElementById('f-tags').value),
       usage:        document.getElementById('f-usage').value.trim(),
+      prompt:       document.getElementById('f-prompt').value.trim(),
       notes:        document.getElementById('f-notes').value.trim(),
     };
     projects.push(entry);
@@ -394,7 +399,10 @@ function renderAll(list) {
   <td class="col-tech">${mechHtml}</td>
   <td><span class="status-badge" style="color:${sc};background:${sbg};border:1px solid ${sc}">${sl}</span></td>
   <td style="white-space:pre-wrap">${p.usage||'―'}</td>
-  <td>${p.notes||'―'}</td>
+  <td>
+    ${p.notes||'―'}
+    ${p.prompt ? `<details style="margin-top:6px"><summary style="font-size:11px;color:#1a56db;cursor:pointer">📋 指示プロンプト</summary><div style="margin-top:6px;font-size:12px;color:#444;white-space:pre-wrap;background:#f7f8fa;padding:8px;border-radius:6px">${p.prompt}</div></details>` : ''}
+  </td>
   <td><div class="op-btns">
     <button class="btn btn-secondary btn-sm" onclick='showForm(${JSON.stringify(p)})'>編集</button>
     <button class="btn btn-danger btn-sm" onclick="showDelete('${p.id}')">削除</button>

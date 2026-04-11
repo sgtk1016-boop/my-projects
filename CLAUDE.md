@@ -57,9 +57,11 @@ Split architecture: GitHub Actions (daily cron) fetches comments → Groq AI gen
    - integrations: 連携したサービス・API・ツール名（配列）
    - status: 完成→"completed" / 動作確認中→"in_progress" / 未着手→"planning" / 停止中→"paused"
    - tags: 該当するもの（業務DX / YouTube / 自動化 / GAS / Python / Google Sheets など）
-   - notes: 次のステップや未解決の問題。なければ空文字
+   - usage: 実際の使い方・起動手順（①②③形式で簡潔に。会話中に手順・コマンド・操作方法があれば必ず抽出する）
+   - prompt: ユーザーがClaudeに最初に伝えた指示の要約（「〇〇を作って」という依頼内容。会話の冒頭や目的から読み取る）
+   - notes: 次のステップや未解決の問題・制約事項。なければ空文字
 
 2. register.py を --data オプションで実行する
-   python register.py --data '{"name":"...","purpose":"...","mechanism":"...","integrations":["..."],"status":"...","tags":["..."],"notes":"..."}'
+   python register.py --data '{"name":"...","purpose":"...","mechanism":"...","integrations":["..."],"status":"...","tags":["..."],"usage":"...","prompt":"...","notes":"..."}'
 
 3. 登録内容をそのまま表示して完了を伝える

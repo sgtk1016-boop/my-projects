@@ -12,7 +12,8 @@
         "Python",
         "自動化"
       ],
-      "usage": "①python register.py を実行 ②1:新規登録 / 2:既存編集 を選択 ③各フィールドを入力して登録。自動モードは --data '{JSON}' オプションで実行。閲覧は python view.py またはGitHub Pages",
+      "usage": "①python register.py を実行 ②1:新規登録 / 2:既存編集 / 3:削除 を選択 ③各フィールドを入力して登録。自動モードは --data '{JSON}' オプションで実行。閲覧は python view.py またはGitHub Pages",
+      "prompt": "projects.jsonとregister.pyを作って。register.pyは対話形式でフィールドを入力し、id自動生成・追記保存・git同期を行う。編集・削除モードも追加。--dataオプションで自動登録できるようにして。GitHub Pagesでブラウザから閲覧・CRUD操作できるindex.htmlも作って。",
       "notes": ""
     },
     {
@@ -36,7 +37,8 @@
         "自動化",
         "Python"
       ],
-      "usage": "",
+      "usage": "①python app.py を実行 ②tkinter GUIで参照画像・スタイル・テンポ等を設定 ③「生成開始」ボタンを押すと10パターンのプロンプトを自動入力してSuno.aiでCreate実行 ④生成完了後にビープ音＋ダイアログで通知 ⑤手動でダウンロード",
+      "prompt": "Python + Playwright でSuno.aiを自動操作するツールを作って。tkinter GUIでパラメータ設定、参照画像から色分析して10パターンのプロンプトを自動生成・入力・Create実行。生成完了をWindows通知で知らせる。Chrome永続プロファイルを使ってログイン状態を維持。",
       "notes": "ダウンロードはユーザーが手動実施に方針変更。Title入力はReact nativeInputValueSetter対応済み。生成完了検出は60秒固定待機＋More optionsボタン数増加orタイトル出現で判定。"
     }
   ]
