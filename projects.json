@@ -1,22 +1,6 @@
 {
   "projects": [
     {
-      "id": "20260411-01",
-      "name": "プロジェクト管理ツール",
-      "date": "2026-04-11",
-      "purpose": "ローカルでプロジェクト情報を対話形式で登録・管理するため",
-      "mechanism": "Python（register.py）が対話形式でフィールドを入力させ、projects.jsonに追記保存する。idはYYYYMMDD-連番形式で自動生成",
-      "integrations": [],
-      "status": "completed",
-      "tags": [
-        "Python",
-        "自動化"
-      ],
-      "usage": "①python register.py を実行 ②1:新規登録 / 2:既存編集 / 3:削除 を選択 ③各フィールドを入力して登録。自動モードは --data '{JSON}' オプションで実行。閲覧は python view.py またはGitHub Pages",
-      "prompt": "projects.jsonとregister.pyを作って。register.pyは対話形式でフィールドを入力し、id自動生成・追記保存・git同期を行う。編集・削除モードも追加。--dataオプションで自動登録できるようにして。GitHub Pagesでブラウザから閲覧・CRUD操作できるindex.htmlも作って。",
-      "notes": ""
-    },
-    {
       "id": "20260411-02",
       "name": "SUNO曲自動生成ツール",
       "date": "2026-04-11",
