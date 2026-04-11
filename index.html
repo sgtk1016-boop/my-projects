@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>プロジェクト管理</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: "Helvetica Neue", Arial, "Hiragino Sans", sans-serif;
+         background: #f7f8fa; color: #222; }
+  header { padding: 40px 0 24px; text-align: center; }
+  header h1 { font-size: 28px; font-weight: 700; color: #1a56db; }
+  header p  { margin-top: 6px; color: #666; font-size: 14px; }
+  .controls { max-width: 800px; margin: 0 auto 20px; padding: 0 16px;
+              display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .controls input, .controls select {
+    border: 1px solid #ddd; border-radius: 6px; padding: 7px 12px;
+    font-size: 14px; background: #fff; }
+  .controls input[type=text] { width: 200px; }
+  .controls input[type=date] { width: 145px; }
+  label { font-size: 13px; color: #555; }
+  .reset-btn { padding: 7px 14px; border: 1px solid #ddd; border-radius: 6px;
+               background: #f0f0f0; cursor: pointer; font-size: 13px; }
+  .reset-btn:hover { background: #e0e0e0; }
+  .main { max-width: 800px; margin: 0 auto; padding: 0 16px 60px; }
+  .count { font-size: 14px; color: #555; margin-bottom: 16px; }
+  .count span { background: #e8eaf6; color: #3949ab; border-radius: 12px;
+                padding: 2px 10px; font-weight: 600; }
+  .card { background: #fff; border-radius: 10px; padding: 18px 20px;
+          margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,.07); }
+  .card-header { display: flex; justify-content: space-between;
+                 align-items: center; margin-bottom: 8px; }
+  .card-date { font-size: 13px; color: #888; }
+  .status-badge { font-size: 12px; border-radius: 10px; padding: 2px 10px; font-weight: 600; }
+  .card-badges { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+  .badge { font-size: 12px; color: #fff; border-radius: 10px; padding: 2px 10px; }
+  .card-name { font-size: 17px; font-weight: 700; margin-bottom: 4px; }
+  .card-purpose { font-size: 13px; color: #555; margin-bottom: 10px; }
+  details.card-detail summary {
+    font-size: 13px; color: #1a56db; cursor: pointer; user-select: none; }
+  details.card-detail table { margin-top: 10px; width: 100%;
+    font-size: 13px; border-collapse: collapse; }
+  details.card-detail th { width: 80px; text-align: left; color: #888;
+    padding: 4px 8px 4px 0; vertical-align: top; white-space: nowrap; }
+  details.card-detail td { color: #333; padding: 4px 0; }
+  .hidden { display: none !important; }
+  .loading { text-align: center; padding: 60px; color: #aaa; font-size: 15px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>プロジェクト管理</h1>
+  <p>Claude Code で作成したプロジェクトの一覧</p>
+</header>
+<div class="controls">
+  <label>検索 <input type="text" id="search" placeholder="キーワードで検索..."></label>
+  <label>タグ
+    <select id="tag-filter"><option value="">すべて</option></select>
+  </label>
+  <label>ステータス
+    <select id="status-filter">
+      <option value="">すべて</option>
+      <option value="planning">計画中</option>
+      <option value="in_progress">進行中</option>
+      <option value="completed">完了</option>
+      <option value="paused">停止中</option>
+    </select>
+  </label>
+  <label>期間
+    <input type="date" id="date-from">〜<input type="date" id="date-to">
+  </label>
+  <button class="reset-btn" onclick="resetFilters()">リセット</button>
+</div>
+<div class="main">
+  <div class="count">全 <span id="count">-</span> 件</div>
+  <div id="list"><div class="loading">読み込み中...</div></div>
+</div>
+<script>
+const TAG_COLORS = [
+  "#4f86c6","#6aab6a","#c47fc4","#c47f4f",
+  "#4fbfc4","#c4b34f","#c45f5f","#7f7fc4"
+];
+const STATUS = {
+  planning:    ["計画中",  "#aaa",    "#f5f5f5"],
+  in_progress: ["進行中",  "#2196f3", "#e3f2fd"],
+  completed:   ["完了",    "#4caf50", "#e8f5e9"],
+  paused:      ["停止中",  "#ff9800", "#fff3e0"],
+};
+function tagColor(tag) {
+  let h = 0;
+  for (let c of tag) h = (h * 31 + c.charCodeAt(0)) & 0xffffffff;
+  return TAG_COLORS[Math.abs(h) % TAG_COLORS.length];
+}
+
+function renderAll(projects) {
+  projects.sort((a, b) => b.date.localeCompare(a.date));
+
+  const allTags = [...new Set(projects.flatMap(p => p.tags || []))].sort();
+  const tagSel = document.getElementById('tag-filter');
+  allTags.forEach(t => {
+    const o = document.createElement('option');
+    o.value = o.textContent = t;
+    tagSel.appendChild(o);
+  });
+
+  document.getElementById('list').innerHTML = projects.map(p => {
+    const [sl, sc, sbg] = STATUS[p.status] || ["不明","#aaa","#f5f5f5"];
+    const badges = (p.tags || []).map(t =>
+      `<span class="badge" style="background:${tagColor(t)}">${t}</span>`
+    ).join('');
+    const integ = (p.integrations || []).join(', ') || '―';
+    const notes = p.notes || '―';
+    return `
+<div class="card"
+     data-name="${p.name}" data-purpose="${p.purpose||''}"
+     data-tags="${(p.tags||[]).join(' ')}" data-status="${p.status||''}"
+     data-date="${p.date}">
+  <div class="card-header">
+    <span class="card-date">${p.date}</span>
+    <span class="status-badge" style="color:${sc};background:${sbg};border:1px solid ${sc}">${sl}</span>
+  </div>
+  <div class="card-badges">${badges}</div>
+  <div class="card-name">${p.name}</div>
+  <div class="card-purpose">${p.purpose||''}</div>
+  <details class="card-detail">
+    <summary>詳細</summary>
+    <table>
+      <tr><th>ID</th><td>${p.id}</td></tr>
+      <tr><th>仕組み</th><td>${p.mechanism||''}</td></tr>
+      <tr><th>連携</th><td>${integ}</td></tr>
+      <tr><th>備考</th><td>${notes}</td></tr>
+    </table>
+  </details>
+</div>`;
+  }).join('');
+
+  filter();
+}
+
+function filter() {
+  const kw   = document.getElementById('search').value.toLowerCase();
+  const tag  = document.getElementById('tag-filter').value;
+  const stat = document.getElementById('status-filter').value;
+  const from = document.getElementById('date-from').value;
+  const to   = document.getElementById('date-to').value;
+  let count = 0;
+  document.querySelectorAll('.card').forEach(c => {
+    const ok =
+      (!kw   || c.dataset.name.toLowerCase().includes(kw) || c.dataset.purpose.toLowerCase().includes(kw)) &&
+      (!tag  || c.dataset.tags.split(' ').includes(tag)) &&
+      (!stat || c.dataset.status === stat) &&
+      (!from || c.dataset.date >= from) &&
+      (!to   || c.dataset.date <= to);
+    c.classList.toggle('hidden', !ok);
+    if (ok) count++;
+  });
+  document.getElementById('count').textContent = count;
+}
+
+function resetFilters() {
+  ['search','tag-filter','status-filter','date-from','date-to']
+    .forEach(id => document.getElementById(id).value = '');
+  filter();
+}
+
+['search','tag-filter','status-filter','date-from','date-to']
+  .forEach(id => document.getElementById(id).addEventListener('input', filter));
+
+fetch('./projects.json')
+  .then(r => r.json())
+  .then(d => renderAll(d.projects || []))
+  .catch(() => {
+    document.getElementById('list').innerHTML =
+      '<div class="loading">projects.json の読み込みに失敗しました</div>';
+  });
+</script>
+</body>
+</html>
