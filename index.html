@@ -232,22 +232,31 @@ function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
 let fileSha = '';
 let projects = [];
 
+function b64DecodeUtf8(str) {
+  return decodeURIComponent(
+    atob(str.replace(/\n/g, '')).split('').map(c =>
+      '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+    ).join('')
+  );
+}
+function b64EncodeUtf8(str) {
+  return btoa(unescape(encodeURIComponent(str)));
+}
+
 async function fetchProjects() {
   const res = await fetch(API, {
     headers: getToken() ? { Authorization: `token ${getToken()}` } : {}
   });
   const data = await res.json();
   fileSha = data.sha;
-  const json = JSON.parse(atob(data.content.replace(/\n/g, '')));
+  const json = JSON.parse(b64DecodeUtf8(data.content));
   return json.projects || [];
 }
 
 async function saveProjects(newProjects, message) {
   const token = getToken();
   if (!token) { alert('GitHub Token が設定されていません。'); showTokenModal(); return false; }
-  const content = btoa(unescape(encodeURIComponent(
-    JSON.stringify({ projects: newProjects }, null, 2)
-  )));
+  const content = b64EncodeUtf8(JSON.stringify({ projects: newProjects }, null, 2));
   const res = await fetch(API, {
     method: 'PUT',
     headers: { Authorization: `token ${token}`, 'Content-Type': 'application/json' },
