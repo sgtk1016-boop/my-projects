@@ -14,6 +14,30 @@
       ],
       "usage": "①python register.py を実行 ②1:新規登録 / 2:既存編集 を選択 ③各フィールドを入力して登録。自動モードは --data '{JSON}' オプションで実行。閲覧は python view.py またはGitHub Pages",
       "notes": ""
+    },
+    {
+      "id": "20260411-02",
+      "name": "SUNO曲自動生成ツール",
+      "date": "2026-04-11",
+      "purpose": "Suno.aiブラウザ自動操作で曲を一括生成するツール。GUIから10パターンのプロンプトを自動入力してCreateを実行し、生成完了をWindows通知で知らせる。",
+      "mechanism": "Python + Playwright でChrome永続プロファイルを操作。tkinter GUIでパラメータ設定・実行管理。Pillowで参照画像の色分析、ルールベースで10プロンプト生成。生成完了時はwinsoundでビープ音 + PowerShell MessageBoxでダウンロード確認ダイアログを表示。",
+      "integrations": [
+        "Suno.ai",
+        "Playwright",
+        "tkinter",
+        "Pillow",
+        "PyYAML",
+        "winsound",
+        "PowerShell"
+      ],
+      "status": "in_progress",
+      "tags": [
+        "YouTube",
+        "自動化",
+        "Python"
+      ],
+      "usage": "",
+      "notes": "ダウンロードはユーザーが手動実施に方針変更。Title入力はReact nativeInputValueSetter対応済み。生成完了検出は60秒固定待機＋More optionsボタン数増加orタイトル出現で判定。"
     }
   ]
 }
