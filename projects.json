@@ -40,6 +40,27 @@
       "usage": "①python app.py を実行 ②tkinter GUIで参照画像・スタイル・テンポ等を設定 ③「生成開始」ボタンを押すと10パターンのプロンプトを自動入力してSuno.aiでCreate実行 ④生成完了後にビープ音＋ダイアログで通知 ⑤手動でダウンロード",
       "prompt": "Python + Playwright でSuno.aiを自動操作するツールを作って。tkinter GUIでパラメータ設定、参照画像から色分析して10パターンのプロンプトを自動生成・入力・Create実行。生成完了をWindows通知で知らせる。Chrome永続プロファイルを使ってログイン状態を維持。",
       "notes": "ダウンロードはユーザーが手動実施に方針変更。Title入力はReact nativeInputValueSetter対応済み。生成完了検出は60秒固定待機＋More optionsボタン数増加orタイトル出現で判定。"
+    },
+    {
+      "id": "20260411-03",
+      "name": "プロジェクト管理システム（GitHub Pages CRUD）",
+      "date": "2026-04-11",
+      "purpose": "ClaudeCodeで作成したプロジェクトをブラウザから登録・編集・削除・閲覧できるシステム。どこからでもアクセス可能。",
+      "mechanism": "Python（register.py）でCLI・自動登録。GitHub API経由でprojects.jsonを更新。index.html（GitHub Pages）でブラウザからCRUD操作。GitHub PATをlocalStorageに保存して認証。",
+      "integrations": [
+        "GitHub API",
+        "GitHub Pages",
+        "Python",
+        "localStorage"
+      ],
+      "status": "completed",
+      "tags": [
+        "Python",
+        "自動化"
+      ],
+      "usage": "①https://sgtk1016-boop.github.io/my-projects/ を開く ②右上「Token設定」でGitHub PATを入力（初回のみ） ③「新規登録」で追加 / 各行の「編集」「削除」ボタンで操作 ④CLIはpython register.py で対話登録 または --data オプションで自動登録",
+      "prompt": "ClaudeCodeで作ったプロジェクトをGitHub Pagesで閲覧・登録・編集・削除できるシステムを作って。ブラウザからCRUD操作でき、どこからでもアクセスできるようにしたい。",
+      "notes": "GitHub PATはlocalStorageに保存。Publicリポジトリのため個人情報は記載しない。"
     }
   ]
 }
