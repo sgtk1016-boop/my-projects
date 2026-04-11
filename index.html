@@ -132,8 +132,8 @@ function renderAll(projects) {
         p.mechanism || '',
         integ ? `<ul>${integ}</ul>` : ''
       ].filter(Boolean).join('<br>');
-      const usage = p.usage || p.notes || '―';
-      const notes = p.usage ? (p.notes || '―') : '―';
+      const usage = p.usage || '―';
+      const notes = p.notes || '―';
       rows += `
 <tr class="data-row"
     data-name="${p.name}" data-purpose="${p.purpose||''}"
