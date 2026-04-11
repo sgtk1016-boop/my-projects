@@ -8,10 +8,21 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: "Helvetica Neue", Arial, "Hiragino Sans", sans-serif;
          background: #f7f8fa; color: #222; font-size: 13px; }
-  header { padding: 32px 0 20px; text-align: center; }
+  header { padding: 28px 0 16px; text-align: center; position: relative; }
   header h1 { font-size: 26px; font-weight: 700; color: #1a56db; }
-  header p  { margin-top: 6px; color: #666; font-size: 13px; }
-  .controls { max-width: 1100px; margin: 0 auto 16px; padding: 0 16px;
+  header p  { margin-top: 4px; color: #666; font-size: 13px; }
+  .header-btns { position: absolute; right: 20px; top: 28px; display: flex; gap: 8px; }
+  .btn { padding: 7px 14px; border-radius: 6px; border: none; cursor: pointer;
+         font-size: 13px; font-weight: 600; }
+  .btn-primary { background: #1a56db; color: #fff; }
+  .btn-primary:hover { background: #1648c0; }
+  .btn-danger  { background: #e53e3e; color: #fff; }
+  .btn-danger:hover { background: #c53030; }
+  .btn-secondary { background: #e2e8f0; color: #333; }
+  .btn-secondary:hover { background: #cbd5e0; }
+  .btn-sm { padding: 4px 10px; font-size: 12px; }
+
+  .controls { max-width: 1100px; margin: 0 auto 14px; padding: 0 16px;
               display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
   .controls input, .controls select {
     border: 1px solid #ddd; border-radius: 6px; padding: 6px 10px;
@@ -21,45 +32,76 @@
   label { font-size: 12px; color: #555; }
   .reset-btn { padding: 6px 12px; border: 1px solid #ddd; border-radius: 6px;
                background: #f0f0f0; cursor: pointer; font-size: 12px; }
-  .reset-btn:hover { background: #e0e0e0; }
+
   .main { max-width: 1100px; margin: 0 auto; padding: 0 16px 60px; }
   .count { font-size: 13px; color: #555; margin-bottom: 12px; }
   .count span { background: #e8eaf6; color: #3949ab; border-radius: 12px;
                 padding: 2px 10px; font-weight: 600; }
 
-  /* テーブル */
   table { width: 100%; border-collapse: collapse; background: #fff;
           border-radius: 10px; overflow: hidden;
           box-shadow: 0 1px 4px rgba(0,0,0,.08); }
-  thead th { background: #1a56db; color: #fff; padding: 10px 12px;
+  thead th { background: #1a56db; color: #fff; padding: 10px 10px;
              text-align: left; font-weight: 600; white-space: nowrap; }
   thead th:first-child { width: 36px; text-align: center; }
   tbody tr { border-bottom: 1px solid #eee; }
   tbody tr:last-child { border-bottom: none; }
   tbody tr:hover { background: #f5f8ff; }
-  tbody td { padding: 10px 12px; vertical-align: top; line-height: 1.6; }
+  tbody td { padding: 10px 10px; vertical-align: top; line-height: 1.6; }
   tbody td:first-child { text-align: center; color: #aaa; }
-
-  /* カテゴリグループ行 */
   .group-row td { background: #e8eaf6; font-weight: 700;
                   color: #3949ab; padding: 6px 12px; }
-
-  /* バッジ */
   .badge { display: inline-block; font-size: 11px; color: #fff;
            border-radius: 10px; padding: 1px 8px; margin: 1px 2px; }
   .status-badge { display: inline-block; font-size: 11px; border-radius: 10px;
                   padding: 2px 10px; font-weight: 600; white-space: nowrap; }
   .col-tech { font-size: 12px; color: #444; }
-  .col-tech li { margin-left: 14px; }
+  .col-tech ul { margin-left: 14px; }
+  .op-btns { display: flex; gap: 4px; white-space: nowrap; }
   .hidden { display: none !important; }
   .loading { text-align: center; padding: 60px; color: #aaa; }
+
+  /* モーダル */
+  .overlay { position: fixed; inset: 0; background: rgba(0,0,0,.4);
+             display: flex; align-items: center; justify-content: center; z-index: 100; }
+  .modal { background: #fff; border-radius: 12px; padding: 28px 28px 20px;
+           width: min(600px, 95vw); max-height: 90vh; overflow-y: auto;
+           box-shadow: 0 8px 32px rgba(0,0,0,.2); }
+  .modal h2 { font-size: 18px; margin-bottom: 18px; color: #1a56db; }
+  .form-row { margin-bottom: 14px; }
+  .form-row label { display: block; font-size: 12px; color: #555;
+                    margin-bottom: 4px; font-weight: 600; }
+  .form-row input[type=text], .form-row textarea, .form-row select {
+    width: 100%; border: 1px solid #ddd; border-radius: 6px;
+    padding: 7px 10px; font-size: 13px; font-family: inherit; }
+  .form-row textarea { min-height: 72px; resize: vertical; }
+  .form-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px; }
+
+  /* トークン設定 */
+  .token-bar { background: #fff3cd; border: 1px solid #ffc107;
+               border-radius: 8px; padding: 10px 16px; margin: 0 auto 16px;
+               max-width: 1100px; display: flex; align-items: center; gap: 10px;
+               font-size: 13px; }
+  .token-bar input { flex: 1; border: 1px solid #ddd; border-radius: 6px;
+                     padding: 6px 10px; font-size: 13px; }
 </style>
 </head>
 <body>
+
 <header>
   <h1>プロジェクト管理</h1>
   <p>Claude Code で作成したプロジェクトの一覧</p>
+  <div class="header-btns">
+    <button class="btn btn-secondary" onclick="showTokenModal()">🔑 Token設定</button>
+    <button class="btn btn-primary" onclick="showForm()">＋ 新規登録</button>
+  </div>
 </header>
+
+<div id="token-bar" class="token-bar hidden">
+  ⚠️ GitHub Token が未設定です。編集・登録・削除には Token が必要です。
+  <button class="btn btn-secondary btn-sm" onclick="showTokenModal()">設定する</button>
+</div>
+
 <div class="controls">
   <label>検索 <input type="text" id="search" placeholder="キーワードで検索..."></label>
   <label>タグ <select id="tag-filter"><option value="">すべて</option></select></label>
@@ -75,33 +117,238 @@
   <label>期間 <input type="date" id="date-from">〜<input type="date" id="date-to"></label>
   <button class="reset-btn" onclick="resetFilters()">リセット</button>
 </div>
+
 <div class="main">
   <div class="count">全 <span id="count">-</span> 件</div>
   <div id="list"><div class="loading">読み込み中...</div></div>
 </div>
+
+<!-- フォームモーダル -->
+<div id="form-modal" class="overlay hidden">
+  <div class="modal">
+    <h2 id="form-title">新規登録</h2>
+    <input type="hidden" id="edit-id">
+    <div class="form-row"><label>プロジェクト名 *</label>
+      <input type="text" id="f-name"></div>
+    <div class="form-row"><label>概要（purpose）</label>
+      <textarea id="f-purpose"></textarea></div>
+    <div class="form-row"><label>仕組み（mechanism）</label>
+      <textarea id="f-mechanism"></textarea></div>
+    <div class="form-row"><label>連携サービス（カンマ区切り）</label>
+      <input type="text" id="f-integrations" placeholder="GAS, Google Calendar API"></div>
+    <div class="form-row"><label>ステータス</label>
+      <select id="f-status">
+        <option value="planning">計画中</option>
+        <option value="in_progress">進行中</option>
+        <option value="completed">完了</option>
+        <option value="paused">停止中</option>
+      </select></div>
+    <div class="form-row"><label>タグ（カンマ区切り）</label>
+      <input type="text" id="f-tags" placeholder="Python, 自動化"></div>
+    <div class="form-row"><label>使用方法（usage）</label>
+      <textarea id="f-usage"></textarea></div>
+    <div class="form-row"><label>備考（notes）</label>
+      <textarea id="f-notes"></textarea></div>
+    <div class="form-actions">
+      <button class="btn btn-secondary" onclick="closeModal('form-modal')">キャンセル</button>
+      <button class="btn btn-primary" onclick="saveEntry()">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- 削除確認モーダル -->
+<div id="delete-modal" class="overlay hidden">
+  <div class="modal" style="width:360px">
+    <h2>削除の確認</h2>
+    <p id="delete-msg" style="margin-bottom:20px;line-height:1.6"></p>
+    <div class="form-actions">
+      <button class="btn btn-secondary" onclick="closeModal('delete-modal')">キャンセル</button>
+      <button class="btn btn-danger" onclick="confirmDelete()">削除する</button>
+    </div>
+  </div>
+</div>
+
+<!-- Token設定モーダル -->
+<div id="token-modal" class="overlay hidden">
+  <div class="modal" style="width:420px">
+    <h2>🔑 GitHub Token 設定</h2>
+    <p style="margin-bottom:12px;color:#555;line-height:1.6">
+      GitHub Personal Access Token（repo権限）を入力してください。<br>
+      トークンはこのブラウザのlocalStorageにのみ保存されます。
+    </p>
+    <div class="form-row"><label>Token</label>
+      <input type="password" id="token-input" placeholder="ghp_...">
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-secondary" onclick="clearToken()">クリア</button>
+      <button class="btn btn-secondary" onclick="closeModal('token-modal')">キャンセル</button>
+      <button class="btn btn-primary" onclick="saveToken()">保存</button>
+    </div>
+  </div>
+</div>
+
 <script>
-const TAG_COLORS = [
-  "#4f86c6","#6aab6a","#c47fc4","#c47f4f",
-  "#4fbfc4","#c4b34f","#c45f5f","#7f7fc4"
-];
+const OWNER = 'sgtk1016-boop';
+const REPO  = 'my-projects';
+const FILE  = 'projects.json';
+const API   = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE}`;
+
+const TAG_COLORS = ["#4f86c6","#6aab6a","#c47fc4","#c47f4f","#4fbfc4","#c4b34f","#c45f5f","#7f7fc4"];
 const STATUS = {
   planning:    ["計画中",  "#aaa",    "#f5f5f5"],
   in_progress: ["進行中",  "#2196f3", "#e3f2fd"],
   completed:   ["完了",    "#4caf50", "#e8f5e9"],
   paused:      ["停止中",  "#ff9800", "#fff3e0"],
 };
+
 function tagColor(tag) {
   let h = 0;
   for (let c of tag) h = (h * 31 + c.charCodeAt(0)) & 0xffffffff;
   return TAG_COLORS[Math.abs(h) % TAG_COLORS.length];
 }
 
-let allProjects = [];
+// Token管理
+function getToken() { return localStorage.getItem('gh_token') || ''; }
+function saveToken() {
+  const t = document.getElementById('token-input').value.trim();
+  if (t) { localStorage.setItem('gh_token', t); }
+  closeModal('token-modal');
+  checkToken();
+}
+function clearToken() { localStorage.removeItem('gh_token'); closeModal('token-modal'); checkToken(); }
+function showTokenModal() {
+  document.getElementById('token-input').value = getToken();
+  openModal('token-modal');
+}
+function checkToken() {
+  document.getElementById('token-bar').classList.toggle('hidden', !!getToken());
+}
 
-function renderAll(projects) {
-  allProjects = projects.sort((a, b) => b.date.localeCompare(a.date));
+// モーダル
+function openModal(id)  { document.getElementById(id).classList.remove('hidden'); }
+function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
 
-  const allTags = [...new Set(projects.flatMap(p => p.tags || []))].sort();
+// GitHub API
+let fileSha = '';
+let projects = [];
+
+async function fetchProjects() {
+  const res = await fetch(API, {
+    headers: getToken() ? { Authorization: `token ${getToken()}` } : {}
+  });
+  const data = await res.json();
+  fileSha = data.sha;
+  const json = JSON.parse(atob(data.content.replace(/\n/g, '')));
+  return json.projects || [];
+}
+
+async function saveProjects(newProjects, message) {
+  const token = getToken();
+  if (!token) { alert('GitHub Token が設定されていません。'); showTokenModal(); return false; }
+  const content = btoa(unescape(encodeURIComponent(
+    JSON.stringify({ projects: newProjects }, null, 2)
+  )));
+  const res = await fetch(API, {
+    method: 'PUT',
+    headers: { Authorization: `token ${token}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message, content, sha: fileSha })
+  });
+  if (!res.ok) { alert('保存に失敗しました: ' + (await res.text())); return false; }
+  const data = await res.json();
+  fileSha = data.content.sha;
+  return true;
+}
+
+// ID生成
+function generateId(projects) {
+  const today = new Date().toISOString().slice(0,10).replace(/-/g,'');
+  const existing = projects.filter(p => p.id.startsWith(today));
+  return `${today}-${String(existing.length + 1).padStart(2,'0')}`;
+}
+
+// フォーム
+function showForm(entry = null) {
+  document.getElementById('form-title').textContent = entry ? '編集' : '新規登録';
+  document.getElementById('edit-id').value = entry ? entry.id : '';
+  document.getElementById('f-name').value        = entry?.name || '';
+  document.getElementById('f-purpose').value     = entry?.purpose || '';
+  document.getElementById('f-mechanism').value   = entry?.mechanism || '';
+  document.getElementById('f-integrations').value= (entry?.integrations || []).join(', ');
+  document.getElementById('f-status').value      = entry?.status || 'planning';
+  document.getElementById('f-tags').value        = (entry?.tags || []).join(', ');
+  document.getElementById('f-usage').value       = entry?.usage || '';
+  document.getElementById('f-notes').value       = entry?.notes || '';
+  openModal('form-modal');
+}
+
+async function saveEntry() {
+  const name = document.getElementById('f-name').value.trim();
+  if (!name) { alert('プロジェクト名は必須です。'); return; }
+
+  const editId = document.getElementById('edit-id').value;
+  const split = v => v.split(',').map(s => s.trim()).filter(Boolean);
+
+  if (editId) {
+    // 編集
+    const idx = projects.findIndex(p => p.id === editId);
+    projects[idx] = { ...projects[idx],
+      name,
+      purpose:      document.getElementById('f-purpose').value.trim(),
+      mechanism:    document.getElementById('f-mechanism').value.trim(),
+      integrations: split(document.getElementById('f-integrations').value),
+      status:       document.getElementById('f-status').value,
+      tags:         split(document.getElementById('f-tags').value),
+      usage:        document.getElementById('f-usage').value.trim(),
+      notes:        document.getElementById('f-notes').value.trim(),
+    };
+    const ok = await saveProjects(projects, `update: ${name}`);
+    if (ok) { closeModal('form-modal'); renderAll(projects); }
+  } else {
+    // 新規
+    const entry = {
+      id:           generateId(projects),
+      name,
+      date:         new Date().toISOString().slice(0,10),
+      purpose:      document.getElementById('f-purpose').value.trim(),
+      mechanism:    document.getElementById('f-mechanism').value.trim(),
+      integrations: split(document.getElementById('f-integrations').value),
+      status:       document.getElementById('f-status').value,
+      tags:         split(document.getElementById('f-tags').value),
+      usage:        document.getElementById('f-usage').value.trim(),
+      notes:        document.getElementById('f-notes').value.trim(),
+    };
+    projects.push(entry);
+    const ok = await saveProjects(projects, `add: ${name}`);
+    if (ok) { closeModal('form-modal'); renderAll(projects); }
+  }
+}
+
+// 削除
+let deleteTarget = null;
+function showDelete(id) {
+  deleteTarget = id;
+  const p = projects.find(p => p.id === id);
+  document.getElementById('delete-msg').textContent =
+    `「${p.name}」を削除しますか？この操作は取り消せません。`;
+  openModal('delete-modal');
+}
+async function confirmDelete() {
+  const p = projects.find(p => p.id === deleteTarget);
+  const newList = projects.filter(p => p.id !== deleteTarget);
+  const ok = await saveProjects(newList, `remove: ${p.name}`);
+  if (ok) {
+    projects = newList;
+    closeModal('delete-modal');
+    renderAll(projects);
+  }
+}
+
+// 描画
+function renderAll(list) {
+  projects = list;
+  list.sort((a, b) => b.date.localeCompare(a.date));
+
+  const allTags = [...new Set(list.flatMap(p => p.tags || []))].sort();
   const tagSel = document.getElementById('tag-filter');
   tagSel.innerHTML = '<option value="">すべて</option>';
   allTags.forEach(t => {
@@ -110,9 +357,8 @@ function renderAll(projects) {
     tagSel.appendChild(o);
   });
 
-  // タグ（カテゴリ）でグループ化
   const grouped = {};
-  projects.forEach(p => {
+  list.forEach(p => {
     const cat = (p.tags && p.tags[0]) || '未分類';
     if (!grouped[cat]) grouped[cat] = [];
     grouped[cat].push(p);
@@ -121,50 +367,39 @@ function renderAll(projects) {
   let rows = '';
   let num = 1;
   Object.entries(grouped).forEach(([cat, items]) => {
-    rows += `<tr class="group-row"><td colspan="8">${cat}（${items.length}件）</td></tr>`;
+    rows += `<tr class="group-row"><td colspan="9">${cat}（${items.length}件）</td></tr>`;
     items.forEach(p => {
       const [sl, sc, sbg] = STATUS[p.status] || ["不明","#aaa","#f5f5f5"];
-      const tags = (p.tags || []).map(t =>
-        `<span class="badge" style="background:${tagColor(t)}">${t}</span>`
-      ).join('');
-      const integ = (p.integrations || []).map(i => `<li>${i}</li>`).join('');
-      const mechAndInteg = [
-        p.mechanism || '',
-        integ ? `<ul>${integ}</ul>` : ''
-      ].filter(Boolean).join('<br>');
-      const usage = p.usage || '―';
-      const notes = p.notes || '―';
+      const tags = (p.tags||[]).map(t =>
+        `<span class="badge" style="background:${tagColor(t)}">${t}</span>`).join('');
+      const integ = (p.integrations||[]).map(i=>`<li>${i}</li>`).join('');
+      const mechHtml = [p.mechanism||'', integ ? `<ul>${integ}</ul>` : ''].filter(Boolean).join('<br>');
       rows += `
 <tr class="data-row"
     data-name="${p.name}" data-purpose="${p.purpose||''}"
-    data-tags="${(p.tags||[]).join(' ')}" data-status="${p.status||''}"
-    data-date="${p.date}">
+    data-tags="${(p.tags||[]).join(' ')}" data-status="${p.status||''}" data-date="${p.date}">
   <td>${num++}</td>
   <td>${tags}</td>
   <td><strong>${p.name}</strong><br><small style="color:#888">${p.date}</small></td>
   <td>${p.purpose||''}</td>
-  <td class="col-tech">${mechAndInteg}</td>
+  <td class="col-tech">${mechHtml}</td>
   <td><span class="status-badge" style="color:${sc};background:${sbg};border:1px solid ${sc}">${sl}</span></td>
-  <td style="white-space:pre-wrap">${usage}</td>
-  <td>${notes}</td>
+  <td style="white-space:pre-wrap">${p.usage||'―'}</td>
+  <td>${p.notes||'―'}</td>
+  <td><div class="op-btns">
+    <button class="btn btn-secondary btn-sm" onclick='showForm(${JSON.stringify(p)})'>編集</button>
+    <button class="btn btn-danger btn-sm" onclick="showDelete('${p.id}')">削除</button>
+  </div></td>
 </tr>`;
     });
   });
 
   document.getElementById('list').innerHTML = `
 <table>
-  <thead>
-    <tr>
-      <th>#</th>
-      <th>カテゴリ</th>
-      <th>プロジェクト名</th>
-      <th>概要</th>
-      <th>技術スタック</th>
-      <th>ステータス</th>
-      <th>使用方法</th>
-      <th>備考</th>
-    </tr>
-  </thead>
+  <thead><tr>
+    <th>#</th><th>カテゴリ</th><th>プロジェクト名</th><th>概要</th>
+    <th>技術スタック</th><th>ステータス</th><th>使用方法</th><th>備考</th><th>操作</th>
+  </tr></thead>
   <tbody>${rows}</tbody>
 </table>`;
 
@@ -188,7 +423,6 @@ function filter() {
     r.classList.toggle('hidden', !ok);
     if (ok) count++;
   });
-  // グループ行の表示制御
   document.querySelectorAll('.group-row').forEach(gr => {
     let next = gr.nextElementSibling;
     let anyVisible = false;
@@ -206,17 +440,14 @@ function resetFilters() {
     .forEach(id => document.getElementById(id).value = '');
   filter();
 }
-
 ['search','tag-filter','status-filter','date-from','date-to']
   .forEach(id => document.getElementById(id).addEventListener('input', filter));
 
-fetch('./projects.json')
-  .then(r => r.json())
-  .then(d => renderAll(d.projects || []))
-  .catch(() => {
-    document.getElementById('list').innerHTML =
-      '<div class="loading">projects.json の読み込みに失敗しました</div>';
-  });
+// 初期化
+checkToken();
+fetchProjects().then(renderAll).catch(() => {
+  document.getElementById('list').innerHTML = '<div class="loading">読み込みに失敗しました</div>';
+});
 </script>
 </body>
 </html>
