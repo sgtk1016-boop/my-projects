@@ -104,6 +104,42 @@ def edit_mode(data, projects):
     print(json.dumps(entry, ensure_ascii=False, indent=2))
     git_sync(entry["name"], entry["date"], action="update")
 
+def delete_mode(data, projects):
+    if not projects:
+        print("登録済みプロジェクトがありません。")
+        return
+
+    print("=== プロジェクト一覧 ===")
+    for i, p in enumerate(projects, 1):
+        print(f"  {i}: [{p['id']}] {p['name']}")
+
+    try:
+        idx = int(input("削除する番号: ").strip()) - 1
+        if not (0 <= idx < len(projects)):
+            print("無効な番号です。")
+            return
+    except ValueError:
+        print("無効な入力です。")
+        return
+
+    target = projects[idx]
+    confirm = input(f"「{target['name']}」を削除しますか？ (y/N): ").strip().lower()
+    if confirm != "y":
+        print("キャンセルしました。")
+        return
+
+    projects.pop(idx)
+    data["projects"] = projects
+
+    try:
+        PROJECTS_FILE.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+    except Exception as e:
+        print(f"保存に失敗しました: {e}")
+        return
+
+    print(f"「{target['name']}」を削除しました。")
+    git_sync(target["name"], target["date"], action="remove")
+
 def register_entry(data, projects, name, purpose, mechanism, integrations, status, tags, usage, notes):
     entry = {
         "id":           generate_id(projects),
@@ -161,10 +197,13 @@ def main():
         )
         return
 
-    print("1: 新規登録 / 2: 既存編集")
+    print("1: 新規登録 / 2: 既存編集 / 3: 削除")
     mode = input("選択: ").strip()
     if mode == "2":
         edit_mode(data, projects)
+        return
+    if mode == "3":
+        delete_mode(data, projects)
         return
 
     print("\n=== プロジェクト登録 ===")

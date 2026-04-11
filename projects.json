@@ -14,36 +14,6 @@
       ],
       "usage": "①python register.py を実行 ②1:新規登録 / 2:既存編集 を選択 ③各フィールドを入力して登録。自動モードは --data '{JSON}' オプションで実行。閲覧は python view.py またはGitHub Pages",
       "notes": ""
-    },
-    {
-      "id": "20260411-02",
-      "name": "プロジェクト管理ツール（register.py）",
-      "date": "2026-04-11",
-      "purpose": "ローカルプロジェクトを対話・自動の両モードで登録・編集・管理するため",
-      "mechanism": "Python製CLIスクリプト。対話モード（input）と--dataオプション自動モードを持ち、projects.jsonに追記保存。編集モード・git同期も実装",
-      "integrations": [],
-      "status": "completed",
-      "tags": [
-        "Python",
-        "自動化"
-      ],
-      "usage": "①python register.py を実行 ②1:新規登録 / 2:既存編集 を選択 ③各フィールドを入力して登録。自動モードは --data '{JSON}' オプションで実行。閲覧は python view.py またはGitHub Pages",
-      "notes": "Windows環境でのstdin日本語エンコーディング問題あり（--dataモードで回避可能）"
-    },
-    {
-      "id": "20260411-03",
-      "name": "プロジェクト管理ツール（register.py）",
-      "date": "2026-04-11",
-      "purpose": "ローカルプロジェクトを対話・自動の両モードで登録・編集・管理するため",
-      "mechanism": "Python製CLIスクリプト。対話モード（input）と--dataオプション自動モードを持ち、projects.jsonに追記保存。編集モード・git同期も実装",
-      "integrations": [],
-      "status": "completed",
-      "tags": [
-        "Python",
-        "自動化"
-      ],
-      "usage": "①python register.py を実行 ②1:新規登録 / 2:既存編集 を選択 ③各フィールドを入力して登録。自動モードは --data '{JSON}' オプションで実行。閲覧は python view.py またはGitHub Pages",
-      "notes": "Windows環境でのstdin日本語エンコーディング問題あり（--dataモードで回避可能）"
     }
   ]
 }
