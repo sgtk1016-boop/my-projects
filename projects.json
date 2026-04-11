@@ -1,0 +1,46 @@
+{
+  "projects": [
+    {
+      "id": "20260411-01",
+      "name": "プロジェクト管理ツール",
+      "date": "2026-04-11",
+      "purpose": "ローカルでプロジェクト情報を対話形式で登録・管理するため",
+      "mechanism": "Python（register.py）が対話形式でフィールドを入力させ、projects.jsonに追記保存する。idはYYYYMMDD-連番形式で自動生成",
+      "integrations": [],
+      "status": "completed",
+      "tags": [
+        "Python",
+        "自動化"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "20260411-02",
+      "name": "プロジェクト管理ツール（register.py）",
+      "date": "2026-04-11",
+      "purpose": "ローカルプロジェクトを対話・自動の両モードで登録・編集・管理するため",
+      "mechanism": "Python製CLIスクリプト。対話モード（input）と--dataオプション自動モードを持ち、projects.jsonに追記保存。編集モード・git同期も実装",
+      "integrations": [],
+      "status": "completed",
+      "tags": [
+        "Python",
+        "自動化"
+      ],
+      "notes": "Windows環境でのstdin日本語エンコーディング問題あり（--dataモードで回避可能）"
+    },
+    {
+      "id": "20260411-03",
+      "name": "プロジェクト管理ツール（register.py）",
+      "date": "2026-04-11",
+      "purpose": "ローカルプロジェクトを対話・自動の両モードで登録・編集・管理するため",
+      "mechanism": "Python製CLIスクリプト。対話モード（input）と--dataオプション自動モードを持ち、projects.jsonに追記保存。編集モード・git同期も実装",
+      "integrations": [],
+      "status": "completed",
+      "tags": [
+        "Python",
+        "自動化"
+      ],
+      "notes": "Windows環境でのstdin日本語エンコーディング問題あり（--dataモードで回避可能）"
+    }
+  ]
+}
