@@ -114,6 +114,33 @@
       "usage": "① src/server.ts を修正後 git push origin main でRailwayへデプロイ ② GitHub Actionsを手動実行（またはcron毎朝8時JST） ③ 届いたメールのリンクをクリック → チェックボックスで返信を選択 → 「選択した返信を送信」ボタンで投稿",
       "prompt": "server.tsの承認エンドポイントを、全件一括投稿からチェックボックスで選択して投稿する仕様に変更して",
       "notes": ""
+    },
+    {
+      "id": "20260412-02",
+      "name": "youtube-comment-bot",
+      "date": "2026-04-12",
+      "purpose": "AbyssPhonk YouTubeチャンネルのコメント自動返信システム。毎朝8時JSTにGitHub Actionsで未返信コメントを収集→Groq AIで返信生成→Gmail通知→承認リンクで一括投稿。",
+      "mechanism": "Node.js + TypeScript。GitHub Actions（毎朝8時JST=UTC 23:00）でコメント収集・AI返信生成・Gmail通知を実行。RailwayのExpressサーバーが承認エンドポイントを提供。JWTに返信データを丸ごと埋め込むことでRailway再起動時のデータ消失問題を解決。メールはHTML形式でボタンリンクを提供しURLの改行折り返し問題を回避。",
+      "integrations": [
+        "YouTube Data API v3",
+        "Groq API (llama-3.3-70b-versatile)",
+        "Gmail API",
+        "Railway",
+        "GitHub Actions",
+        "JWT"
+      ],
+      "status": "completed",
+      "tags": [
+        "YouTube",
+        "自動化",
+        "Node.js",
+        "TypeScript",
+        "Railway",
+        "GitHub Actions"
+      ],
+      "usage": "①GitHub Actionsが毎朝8時JST自動実行（手動実行も可）②未返信コメント収集→Groq AIで返信生成→Gmail承認メール送信③メールの『返信を承認する』ボタンをクリック→チェックボックスで返信を選択→送信。Refresh Token失効時: node get_token.jsを実行→取得したトークンをRailway・GitHub Secretsの両方に設定。",
+      "prompt": "YouTubeチャンネルの未返信コメントを自動収集してAIで返信文を生成し、Gmail承認後にYouTubeへ投稿するシステムを作って",
+      "notes": "Google Cloud ConsoleのOAuthアプリが『テスト中』ステータスだとRefresh Tokenが7日で失効する。『本番環境に公開』に変更すると半永久的に有効になる。"
     }
   ]
 }
