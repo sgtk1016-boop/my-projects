@@ -89,6 +89,30 @@
       "usage": "①python generate.py --new <シリーズ名> でフォルダ+meta.json作成②thumbnail.png（サムネイル）/ bg.png（動画背景）/ MP3を配置③起動.batでGUI起動④動画生成タブ：プレビュー→本番生成（3時間）⑤アップロードタブ：タイトル自動生成→予約投稿設定→アップロード→全言語翻訳&設定",
       "prompt": "ABYSS PHONK YouTube BGM動画の生成からYouTubeアップロードまでを自動化するGUIツールを作って",
       "notes": "バッチ自動実行（毎日投稿スケジューラ）は未実装。実際の動作確認はこれから。"
+    },
+    {
+      "id": "20260412-01",
+      "name": "youtube-comment-bot チェックボックス承認",
+      "date": "2026-04-12",
+      "purpose": "承認メールのリンクから全件一括投稿ではなく、コメントごとにチェックボックスで選択してから返信投稿できるようにする。",
+      "mechanism": "Node.js + TypeScript + Express.js。GET /approve でチェックボックス付きフォームを表示し、POST /approve で選択されたコメントIDのみYouTube APIで投稿。JWTトークン検証は既存ロジックを流用。未選択コメントはprocessed_ids.jsonに追記しない。",
+      "integrations": [
+        "YouTube Data API v3",
+        "Express.js",
+        "JWT",
+        "Railway",
+        "GitHub Actions"
+      ],
+      "status": "completed",
+      "tags": [
+        "YouTube",
+        "自動化",
+        "Node.js",
+        "TypeScript"
+      ],
+      "usage": "① src/server.ts を修正後 git push origin main でRailwayへデプロイ ② GitHub Actionsを手動実行（またはcron毎朝8時JST） ③ 届いたメールのリンクをクリック → チェックボックスで返信を選択 → 「選択した返信を送信」ボタンで投稿",
+      "prompt": "server.tsの承認エンドポイントを、全件一括投稿からチェックボックスで選択して投稿する仕様に変更して",
+      "notes": ""
     }
   ]
 }
