@@ -1,33 +1,6 @@
 {
   "projects": [
     {
-      "id": "20260412-02",
-      "name": "youtube-comment-bot",
-      "date": "2026-04-12",
-      "purpose": "AbyssPhonk YouTubeチャンネルのコメント自動返信システム。毎朝8時JSTにGitHub Actionsで未返信コメントを収集→Groq AIで返信生成→Gmail通知→承認リンクで一括投稿。",
-      "mechanism": "Node.js + TypeScript。GitHub Actions（毎朝8時JST=UTC 23:00）でコメント収集・AI返信生成・Gmail通知を実行。RailwayのExpressサーバーが承認エンドポイントを提供。JWTに返信データを丸ごと埋め込むことでRailway再起動時のデータ消失問題を解決。メールはHTML形式でボタンリンクを提供しURLの改行折り返し問題を回避。",
-      "integrations": [
-        "YouTube Data API v3",
-        "Groq API (llama-3.3-70b-versatile)",
-        "Gmail API",
-        "Railway",
-        "GitHub Actions",
-        "JWT"
-      ],
-      "status": "completed",
-      "tags": [
-        "YouTube",
-        "自動化",
-        "Node.js",
-        "TypeScript",
-        "Railway",
-        "GitHub Actions"
-      ],
-      "usage": "①GitHub Actionsが毎朝8時JST自動実行（手動実行も可）②未返信コメント収集→Groq AIで返信生成→Gmail承認メール送信③メールの『返信を承認する』ボタンをクリック→チェックボックスで返信を選択→送信。Refresh Token失効時: node get_token.jsを実行→取得したトークンをRailway・GitHub Secretsの両方に設定。",
-      "prompt": "YouTubeチャンネルの未返信コメントを自動収集してAIで返信文を生成し、Gmail承認後にYouTubeへ投稿するシステムを作って",
-      "notes": "Google Cloud ConsoleのOAuthアプリが『テスト中』ステータスだとRefresh Tokenが7日で失効する。『本番環境に公開』に変更すると半永久的に有効になる。"
-    },
-    {
       "id": "20260411-02",
       "name": "SUNO曲自動生成ツール",
       "date": "2026-04-11",
@@ -117,6 +90,82 @@
       "usage": "1. [外部SSD]/AbyssPhonk/CLAUDE.md をプロジェクトルートに置く\n2. ターミナルで cd [フォルダ] → claude コマンドで起動\n3. 元サムネ画像 + 新シリーズ名を渡すだけで3フェーズが流れる",
       "prompt": "CLAUDE.mdを参照。元サムネ画像・新シリーズ名・追加要素（任意）を渡してください。",
       "notes": "使用済みシリーズ名：CRIMSON GAZE / DOMINION / ABYSS / SOVEREIGN / SILENCE / SHADOW / CURSE / RITUAL\n未使用：CRIMSON WEB / VENOM / SEDUCTION / QUEEN / SPECTER / ECLIPSE / WRATH\nテキスト配置ルール：顔が左寄り→右上 / 顔が右寄り→左上 / かぶさる場合は反対側"
+    },
+    {
+      "id": "20260412-01",
+      "name": "youtube-comment-bot チェックボックス承認",
+      "date": "2026-04-12",
+      "purpose": "承認メールのリンクから全件一括投稿ではなく、コメントごとにチェックボックスで選択してから返信投稿できるようにする。",
+      "mechanism": "Node.js + TypeScript + Express.js。GET /approve でチェックボックス付きフォームを表示し、POST /approve で選択されたコメントIDのみYouTube APIで投稿。JWTトークン検証は既存ロジックを流用。未選択コメントはprocessed_ids.jsonに追記しない。",
+      "integrations": [
+        "YouTube Data API v3",
+        "Express.js",
+        "JWT",
+        "Railway",
+        "GitHub Actions"
+      ],
+      "status": "completed",
+      "tags": [
+        "YouTube",
+        "自動化",
+        "Node.js",
+        "TypeScript"
+      ],
+      "usage": "① src/server.ts を修正後 git push origin main でRailwayへデプロイ ② GitHub Actionsを手動実行（またはcron毎朝8時JST） ③ 届いたメールのリンクをクリック → チェックボックスで返信を選択 → 「選択した返信を送信」ボタンで投稿",
+      "prompt": "server.tsの承認エンドポイントを、全件一括投稿からチェックボックスで選択して投稿する仕様に変更して",
+      "notes": ""
+    },
+    {
+      "id": "20260412-02",
+      "name": "youtube-comment-bot",
+      "date": "2026-04-12",
+      "purpose": "AbyssPhonk YouTubeチャンネルのコメント自動返信システム。毎朝8時JSTにGitHub Actionsで未返信コメントを収集→Groq AIで返信生成→Gmail通知→承認リンクで一括投稿。",
+      "mechanism": "Node.js + TypeScript。GitHub Actions（毎朝8時JST=UTC 23:00）でコメント収集・AI返信生成・Gmail通知を実行。RailwayのExpressサーバーが承認エンドポイントを提供。JWTに返信データを丸ごと埋め込むことでRailway再起動時のデータ消失問題を解決。メールはHTML形式でボタンリンクを提供しURLの改行折り返し問題を回避。",
+      "integrations": [
+        "YouTube Data API v3",
+        "Groq API (llama-3.3-70b-versatile)",
+        "Gmail API",
+        "Railway",
+        "GitHub Actions",
+        "JWT"
+      ],
+      "status": "completed",
+      "tags": [
+        "YouTube",
+        "自動化",
+        "Node.js",
+        "TypeScript",
+        "Railway",
+        "GitHub Actions"
+      ],
+      "usage": "①GitHub Actionsが毎朝8時JST自動実行（手動実行も可）②未返信コメント収集→Groq AIで返信生成→Gmail承認メール送信③メールの『返信を承認する』ボタンをクリック→チェックボックスで返信を選択→送信。Refresh Token失効時: node get_token.jsを実行→取得したトークンをRailway・GitHub Secretsの両方に設定。",
+      "prompt": "YouTubeチャンネルの未返信コメントを自動収集してAIで返信文を生成し、Gmail承認後にYouTubeへ投稿するシステムを作って",
+      "notes": "Google Cloud ConsoleのOAuthアプリが『テスト中』ステータスだとRefresh Tokenが7日で失効する。『本番環境に公開』に変更すると半永久的に有効になる。"
+    },
+    {
+      "id": "20260415-01",
+      "name": "SUNO曲自動生成ツール",
+      "date": "2026-04-15",
+      "purpose": "Suno.aiブラウザ自動操作で曲を一括生成するツール。GUIから11パターンのプロンプトを自動入力してCreateを実行し、生成完了を音つきWindows通知で知らせる。",
+      "mechanism": "Python + Playwright でChrome永続プロファイルを操作。tkinter GUIでパラメータ設定・実行管理。Pillowで参照画像の色分析、ルールベースで11プロンプト生成。生成完了時はwinsoundでビープ音（1曲: ピン♪、全完了: ピロリン×3）+ PowerShell BalloonTip通知。全完了後はPowerShell MessageBoxでユーザー確認→ブラウザ終了。",
+      "integrations": [
+        "Suno.ai",
+        "Playwright",
+        "tkinter",
+        "Pillow",
+        "PyYAML",
+        "winsound",
+        "PowerShell"
+      ],
+      "status": "in_progress",
+      "tags": [
+        "YouTube",
+        "自動化",
+        "Python"
+      ],
+      "usage": "① python gui.py で起動 ② 参照画像を選択しタイトルを入力 ③ 生成開始ボタンで自動実行 → 完了通知後にブラウザからMP3を手動DL",
+      "prompt": "Suno.aiの曲自動生成ツールを作って。ブラウザ自動操作で複数ジャンルのプロンプトを自動入力してCreate、完了通知を出す。",
+      "notes": "ジャンル11種（Dark Phonk / Jersey Club / Abyss Phonk / Russian Phonk / Memphis Phonk / Drift Phonk / Hard Phonk / Phonk House / Witch Phonk / Dark Trap / Experimental Phonk）。ダウンロードはユーザー手動。lost sys.stdin エラー修正済み（PowerShell MessageBox化）。Title入力React対応済み。"
     }
   ]
 }
