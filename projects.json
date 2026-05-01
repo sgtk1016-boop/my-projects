@@ -47,6 +47,19 @@
       "notes": "GitHub PATはlocalStorageに保存。Publicリポジトリのため個人情報は記載しない。"
     },
     {
+      "id": "20260405-01",
+      "name": "YouTube翻訳自動ツール",
+      "date": "2026-04-05",
+      "purpose": "既存YouTube動画のタイトルと説明文をClaude APIで多言語翻訳し、YouTube localizationsに一括上書き登録するCLIツール。",
+      "mechanism": "Python CLI。Claude API（claude-sonnet-4-6）でタイトル・説明文を翻訳。Google OAuth2でYouTube Data API v3にアクセスし、localizationsエンドポイントへ一括登録。テンプレートベースで各言語の説明文フォーマットを統一。",
+      "integrations": ["YouTube Data API v3", "Anthropic Claude API", "Google OAuth2"],
+      "status": "completed",
+      "tags": ["YouTube", "自動化", "Python", "多言語"],
+      "usage": "① .env に ANTHROPIC_API_KEY を設定 ② python main.py を実行 ③ 動画IDを入力 ④ 翻訳確認後に登録",
+      "prompt": "YouTubeの動画タイトル・説明文をClaude APIで多言語翻訳してYouTube localizationsに一括登録するCLIツールを作って",
+      "notes": "client_secret.json（Google OAuthクライアント）が必要。初回ブラウザ認証後はtoken.jsonを自動更新。"
+    },
+    {
       "id": "20260411-05",
       "name": "ABYSS PHONK 動画自動生成ツール",
       "date": "2026-04-11",
@@ -140,7 +153,20 @@
       ],
       "usage": "①GitHub Actionsが毎朝8時JST自動実行（手動実行も可）②未返信コメント収集→Groq AIで返信生成→Gmail承認メール送信③メールの『返信を承認する』ボタンをクリック→チェックボックスで返信を選択→送信。Refresh Token失効時: node get_token.jsを実行→取得したトークンをRailway・GitHub Secretsの両方に設定。",
       "prompt": "YouTubeチャンネルの未返信コメントを自動収集してAIで返信文を生成し、Gmail承認後にYouTubeへ投稿するシステムを作って",
-      "notes": "Google Cloud ConsoleのOAuthアプリが『テスト中』ステータスだとRefresh Tokenが7日で失効する。『本番環境に公開』に変更すると半永久的に有効になる。"
+      "notes": "Google Cloud ConsoleのOAuthアプリが『テスト中』ステータスだとRefresh Tokenが7日で失効する。『本番環境に公開』に変更すると半永久的に有効になる。2026-04-26: リピーター返信機能追加（commenter_history.jsonで返信履歴管理、Groq AIが過去コメントを踏まえた返信文を生成）。"
+    },
+    {
+      "id": "20260418-01",
+      "name": "曲自動カット（Abyss Audio Cutter）",
+      "date": "2026-04-18",
+      "purpose": "MP3ファイルをブラウザ上でトリミング・クロスフェードミックスして最終音源を書き出すHTMLツール。ABYSS PHONKチャンネル向けの曲編集作業を効率化する。",
+      "mechanism": "単一HTMLファイル（Web Audio API + OfflineAudioContext）。ファイルをドラッグ＆ドロップで読み込み、各トラックの開始・終了・フェード設定を調整してブラウザ内でリアルタイムミックス。書き出しはWAV形式でダウンロード。",
+      "integrations": ["Web Audio API"],
+      "status": "completed",
+      "tags": ["YouTube", "音楽", "HTML", "ブラウザツール"],
+      "usage": "① abyss_audio_cutter.html をブラウザで開く ② MP3ファイルをドラッグ＆ドロップ ③ 各トラックのトリミング・フェード設定 ④ 「Process & Mix」でダウンロード",
+      "prompt": "MP3をブラウザ上でトリミング・クロスフェードミックスできる単一HTMLファイルのツールを作って",
+      "notes": "サーバー不要。HTMLファイル単体で動作。Bebas Neue + ABYSS PHONKテーマカラー（#CC0000）でデザイン統一。"
     },
     {
       "id": "20260415-01",
@@ -166,6 +192,81 @@
       "usage": "① python gui.py で起動 ② 参照画像を選択しタイトルを入力 ③ 生成開始ボタンで自動実行 → 完了通知後にブラウザからMP3を手動DL",
       "prompt": "Suno.aiの曲自動生成ツールを作って。ブラウザ自動操作で複数ジャンルのプロンプトを自動入力してCreate、完了通知を出す。",
       "notes": "ジャンル11種（Dark Phonk / Jersey Club / Abyss Phonk / Russian Phonk / Memphis Phonk / Drift Phonk / Hard Phonk / Phonk House / Witch Phonk / Dark Trap / Experimental Phonk）。ダウンロードはユーザー手動。lost sys.stdin エラー修正済み（PowerShell MessageBox化）。Title入力React対応済み。"
+    },
+    {
+      "id": "20260426-01",
+      "name": "MF収支同期ツール",
+      "date": "2026-04-26",
+      "purpose": "マネーフォワードMEに自動ログインしてCSVをダウンロードし、家計スプレッドシートの各項目に自動反映するツール。毎月7日に完全無人で実行される。",
+      "mechanism": "Python + Playwright + gspread。Playwright でChromiumを起動しMFにOAuth経由でログイン（メール→OTP→パスワード）。session.jsonにCookieを保存して2回目以降はOTP不要。正しいCSV URL（from=YYYY%2FMM%2FDD&month=M&year=Y形式）でCSVをダウンロード。中項目の①②③④プレフィックスで行を特定し、振替・口座移動を除外して月ごとの列に書き込み。Windowsタスクスケジューラ（MFAutoSync）で毎月7日08:00に自動実行。",
+      "integrations": ["Google Sheets API", "gspread", "マネーフォワードME", "Playwright", "Windowsタスクスケジューラ"],
+      "status": "completed",
+      "tags": ["家計管理", "自動化", "Python"],
+      "usage": "【通常】毎月7日に自動実行される。手動実行: 起動.bat → メニュー1（自動同期）。【初回・セッション切れ時】find_csv_url.py を実行→ブラウザが開くのでOTPを入力→session.jsonが保存される→以降は自動",
+      "prompt": "マネーフォワードMEに自動ログインしてCSVをダウンロードし、スプレッドシートに自動反映するツールを作って。毎月自動実行したい。",
+      "notes": "収入は給与（夫のみ）対応。妻分は当面なし。セッション有効期限は約30日。スプシID: 1OiLAAqWnNuGhhWAuESCG7CMd2y0BfEVap1iK-jfHrWA。場所: YOUTUBE/mf-sync/。2026-05-01: Playwright自動ログイン・CSV自動DL・毎月7日スケジューラ対応に全面強化。"
+    },
+    {
+      "id": "20260425-01",
+      "name": "YouTube動画アップロードツール",
+      "date": "2026-04-25",
+      "purpose": "監視フォルダにMP4を置くとブラウザUIからタイトル・概要・予約日時を入力してYouTubeに予約投稿できるツール。ABYSS PHONKチャンネル向け。",
+      "mechanism": "Python + FastAPI + uvicorn。watchdogでupload_queueフォルダを監視。ブラウザUIからキーワード・トラックリスト・予約時刻を入力 → Claude APIでタイトル・概要テキストを生成 → YouTube Data API v3でアップロード。containsSyntheticMedia: Falseを自動設定。",
+      "integrations": ["YouTube Data API v3", "Anthropic Claude API", "FastAPI", "watchdog", "Google OAuth2"],
+      "status": "completed",
+      "tags": ["YouTube", "自動化", "Python"],
+      "usage": "① 起動.bat でサーバー起動（ブラウザが開く） ② upload_queue/ にMP4（+同名JPG/PNG）を配置 ③ ブラウザUIでキーワード・予約日時を入力 ④ アップロード実行",
+      "prompt": "監視フォルダにMP4を置くとブラウザUIでYouTube予約投稿できるツールを作って",
+      "notes": "config.yamlでwatch_folder・チャンネル名を設定。2026-04-26: containsSyntheticMedia: False自動入力追加。2026-04-30: キュー型バッチ対応（最大3本同時アップロード）・チャンクサイズ32MB化で高速化。場所: YOUTUBE/youtube-uploader/。"
+    },
+    {
+      "id": "20260426-02",
+      "name": "YouTubeチャンネルリサーチツール",
+      "date": "2026-04-26",
+      "purpose": "キーワード検索で条件合致するYouTubeチャンネルを抽出しGoogle Spreadsheetに記録するブラウザツール。開設日・登録者数・総再生回数でフィルタリングして新興チャンネルを発見する。",
+      "mechanism": "Node.js + TypeScript + Express.js。YouTube Data API v3でチャンネル検索→詳細取得（50件バッチ）。フィルタリング後にGoogle Sheets APIで実行ごとに新規タブを作成して書き込み。日次クォータ管理（10,000units/日）をdata/フォルダにJSON記録。Tailwind CSS + ダークモード対応UI。",
+      "integrations": ["YouTube Data API v3", "Google Sheets API", "Google Service Account", "Express.js", "TypeScript"],
+      "status": "completed",
+      "tags": ["YouTube", "リサーチ", "Node.js", "TypeScript"],
+      "usage": "① 起動.bat でサーバー起動 ② ブラウザで http://localhost:3000 を開く ③ キーワード・フィルター条件を入力して「Search」 ④ スプレッドシートに自動書き込み",
+      "prompt": "YouTubeチャンネルをキーワード検索して条件フィルタリングし、結果をスプレッドシートに書き込むブラウザツールを作って",
+      "notes": "場所: YOUTUBE/YoutubeResearch/。2026-04-30: ポート競合を起動.batで自動解消する修正済み。スプシID: 1XPALdqSBsJ-A71oNACcujCTHBB0QAnR5Ra3ue5yt-d0"
+    },
+    {
+      "id": "20260426-03",
+      "name": "Suno Color Generator（Claude強化版）",
+      "date": "2026-04-26",
+      "purpose": "サムネイル画像をClaude APIで分析し、その画像に合ったSUNOスタイル・ミキシング指示・バリエーションタグを自動生成するGUIツール。ジャンル名は固定しつつ曲調・ミキシングをサムネイルに連動させる。",
+      "mechanism": "Python + tkinter。サムネイル画像をbase64エンコードしてClaude API（claude-haiku-4-5）に送信。画像の雰囲気・色彩を分析してfull_style（ジャンル固定＋スタイル詳細60-90語）・style_tags（5バリエーション）・mixing_text（ミキシング指示全文）を生成しGUIに反映。APIキーはconfig.jsonに永続保存。",
+      "integrations": ["Anthropic Claude API (claude-haiku-4-5)", "tkinter", "Pillow"],
+      "status": "completed",
+      "tags": ["YouTube", "自動化", "Python", "Claude API", "SUNO"],
+      "usage": "① デスクトップ「Suno Color Generator」→「YouTubeツール」フォルダ内のショートカットで起動 ② Claude強化をONにしてAPIキーを入力（初回のみ・以降自動保存） ③ サムネイル画像を選択→「分析・生成」でスタイルとミキシング指示を自動更新",
+      "notes": "場所: YOUTUBE/SUNO曲自動作成/suno_color_gen.py。分析モジュール: claude_enhancer.py。config.jsonでdeepl/gemini/claudeキーを一元管理。ジャンル名はFIXED_GENRES定数で固定。"
+    },
+    {
+      "id": "20260407-01",
+      "name": "YouTube KPI自動分析・レポートツール",
+      "date": "2026-04-07",
+      "purpose": "AbyssPhonkチャンネルの動画KPI（再生数・CTR・視聴維持率・登録者増減）を毎朝自動集計し、外れ値動画を検出してGmailでHTMLレポートを送信するツール。",
+      "mechanism": "Node.js。YouTube Analytics API＋YouTube Data API v3でKPIを取得（28本・88日間時系列）。outlierScoreで突出動画を自動検出。HTMLダッシュボード（dashboard.html）をローカル生成。Gmail APIでHTMLレポートをsgtk1016@gmail.comに送信。Windowsタスクスケジューラ（AbyssPhonkAnalytics）で毎朝8時JST自動実行。",
+      "integrations": ["YouTube Analytics API", "YouTube Data API v3", "Gmail API", "Windowsタスクスケジューラ"],
+      "status": "completed",
+      "tags": ["YouTube", "分析", "自動化", "Node.js"],
+      "usage": "毎朝8時に自動実行→Gmailにレポートが届く。手動実行: PowerShellで Start-ScheduledTask -TaskName 'AbyssPhonkAnalytics'",
+      "notes": "場所: YOUTUBE/SUNO曲自動作成/analytics/。タスク名: AbyssPhonkAnalytics。2026-04-30: フォルダ集約に伴いタスクスケジューラのパスを更新済み。dashboard.htmlでビジュアルダッシュボードも閲覧可能。"
+    },
+    {
+      "id": "20260427-01",
+      "name": "MJプロンプト生成・評価ツール",
+      "date": "2026-04-27",
+      "purpose": "再生数の多いサムネイルを分析してMidJourney用プロンプトを5パターン生成し、生成画像が横展開できているか評価するGUIツール。",
+      "mechanism": "Python + tkinter。Claude API（claude-haiku-4-5）でサムネイル画像を多モーダル分析→5種構図バリエーション（正面アップ・ドラマチック煽り・俯瞰・サイドライト・背景強調）でMJプロンプト生成（--ar 16:9 --v 6.1）。生成画像と参照サムネを比較評価（スタイル一致度×2・構図・色彩・インパクト・テキスト配置）。色分けスコア表示（緑8点以上・黄6-7・赤4-5・深紅3以下）。",
+      "integrations": ["Anthropic Claude API (claude-haiku-4-5)", "tkinter"],
+      "status": "completed",
+      "tags": ["YouTube", "サムネイル", "Midjourney", "Python", "Claude API"],
+      "usage": "① 「YouTubeツール」フォルダ→「MJプロンプト生成」ショートカットで起動 ② 分析タブ：サムネイル画像を複数選択→分析実行→5種MJプロンプト生成 ③ 評価タブ：MJ生成画像を選択→参照サムネと比較評価→スコア・判定表示",
+      "notes": "場所: YOUTUBE/MJプロンプト生成/。APIキーはconfig.jsonに永続保存。評価スコアは厳格基準（3-7が一般的、8=良好、9=優秀、10=完璧）。スタイル一致度は重み×2で総合スコアを計算。"
     }
   ]
 }
